@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订制列表</title>
+    <!-- 1. 引入vue -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+    <style>
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- 调用组件，让其完成遍历及显示操作 -->
+        <briup-list :data="list">
+            <template v-slot:default="slot">
+                {{slot.row.id}}
+                {{slot.row.name}}
+                {{slot.row.age}}
+            </template>
+        </briup-list>
+
+        <briup-list :data="products">
+            <template v-slot:default="slot">
+                {{slot.row.name}}
+                {{slot.row.price}}
+            </template>
+        </briup-list>
+    </div>
+
+
+    <script>
+        // 组件封装 - 高级前端程序员（30k+）
+        Vue.component('briup-list', {
+            template: `
+                <div style="border-radius:3px; border:1px solid #ccc;">
+                    <ul>
+                        <li v-for='item in data' :style="style">
+                            <slot :row='item'></slot>
+                        </li>
+                    </ul>
+                </div>
+            `,
+            props: ["data"], // 形式参数
+            data() {
+                return {
+                    style: {
+                        lineHeight: "2em",
+                        borderBottom: "1px solid #ccc",
+                        padding: "0 1em"
+                    }
+                }
+            }
+        })
+
+        // 初级前端程序员（3k~5k）
+        new Vue({
+            el: '#app',
+            data: {
+                products: [{
+                    id: 1,
+                    name: '地板维护',
+                    price: 100
+                }, {
+                    id: 1,
+                    name: '落地窗清理',
+                    price: 20
+                }],
+                list: [{
+                    id: 1,
+                    name: "terry",
+                    age: 12
+                }, {
+                    id: 2,
+                    name: "larry",
+                    age: 12
+                }]
+            }
+        })
+    </script>
+
+</body>
+
+</html>

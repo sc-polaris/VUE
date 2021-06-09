@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>栏目管理</title>
+     <!-- 1. 引入vue -->
+     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+     <!-- 引入jquery - ajax -->
+     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    
+    <div id="app">
+        <h2>栏目管理</h2>
+        <!-- 4. 绑定数据 -->
+        <table width="100%" border="1">
+            <thead>
+                <tr>
+                    <td>编号</td>
+                    <td>栏目名称</td>
+                    <td>栏目序号</td>
+                    <td>操作</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="c in categories">
+                    <td>{{c.id}}</td>
+                    <td>{{c.name}}</td>
+                    <td>{{c.nu}}</td>
+                    <td>
+                        <a href="">删除</a>
+                        <a href="">修改</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data:{
+                // 1. 初始化
+                categories:[]   // 栏目的初始值
+            },
+            // vue实例创建完毕，一般在这个阶段完成数据的查询及绑定操作
+            created(){
+                // 2. 加载数据
+                this.loadCategories();
+            },
+            methods:{
+                loadCategories(){
+                    let url = "http://localhost:8888/category/findAll";
+                    $.get(url, (response) => {
+                        console.log(response.message);
+                        if (response.status == 200) {
+                            // 3. 将查询的数据赋值为categories
+                            this.categories = response.data;
+                        } else {
+                            alert(response.message);
+                        }
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>

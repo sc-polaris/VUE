@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产品管理</title>
+    <!-- 1. 引入vue -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+    <!-- 引入jquery - ajax -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <!-- 1. 引入vue -->
+      <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+      <!-- 引入样式 -->
+      <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.2/theme-chalk/index.css" rel="stylesheet">
+      <!-- 引入组件库 -->
+      <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.2/index.js"></script>
+</head>
+
+<body>
+    <!-- 2. 编写视图模板 -->
+    <div id="app">
+        <h2>产品管理</h2>
+        <!-- 表单 -->
+        {{form}}
+        <form @submit.prevent="submit">
+            <div>产品名称： <input type="text" v-model="form.name"></div>
+            <div>产品单价： <input type="text" v-model="form.price"></div>
+            <div>所属分类： </div>
+            <div>产品介绍： <textarea v-model="form.introduce" cols="30" rows="10"></textarea></div>
+            <div><input type="submit" value="提交"></div>
+        </form>
+        <!-- 表格 -->
+        <!-- <table width="100%" border="1">
+            <thead>
+                <tr>
+                    <td>编号</td>
+                    <td>产品名称</td>
+                    <td>单价</td>
+                    <td>操作</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="p in list">
+                    <td>{{p.id}}</td>
+                    <td>{{p.name}}</td>
+                    <td>{{p.price}}</td>
+                    <td>
+                        <a href="">删除</a>
+                        <a href="" @click.prevent="edit(p)">修改</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table> -->
+
+        <el-table :data="list">
+          <el-table-column label="编号" prop="id"></el-table-column>
+          <el-table-column label="名称" prop="name"></el-table-column>
+          <el-table-column label="单价" prop="price"></el-table-column>
+          <el-table-column label="描述" prop="introduce"></el-table-column>
+          <el-table-column label="所属栏目" prop="categoryId"></el-table-column>
+          <el-table-column label="操作">
+              <template v-slot="scope">
+                    <a href="" @click.prevent="edit(scope.row)">修改</a>
+              </template>
+          </el-table-column>
+        </el-table>
+    </div>
+
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                form: {},
+                list: null // 初始化，产品数据
+            },
+            // 表示vue实例创建完毕，开始进行数据渲染
+            created() {
+                this.loadProducts();
+            },
+            methods: {
+                // 修改
+                edit(p) {
+                    this.form = Object.assign({}, p);
+                },
+                // 提交表单
+                submit() {
+                    // 2. ajax交互;
+                    $.ajax({
+                        type: "POST",
+                        url: "http://localhost:8888/product/saveOrUpdate",
+                        contentType: "application/json", //如果提交的是json数据类型，则必须有此参数,表示提交的数据类型
+                        data: JSON.stringify(this.form), // 获取表单数据
+                        success: (response) => {
+                            // 3. 刷新页面
+                            this.loadProducts();
+                            // 提示
+                            alert(response.message);
+                        },
+                        error: (response) => {
+                            alert(response.message);
+                        }
+                        // 将表单置空
+                    }),
+                    this.form = {};
+                },
+                // 加载产品信息
+                loadProducts() {
+                    let url = "http://localhost:8888/product/findAll";
+                    $.get(url, (response) => {
+                        if (response.status == 200) {
+                            this.list = response.data;
+                        } else {
+                            alert(response.message);
+                        }
+                    });
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

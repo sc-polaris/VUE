@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件封装</title>
+    <!-- 1. 引入vue -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+
+
+</head>
+
+<body>
+    <div id="app">
+        <div>{{msg}}</div>
+        <button>按钮1</button>
+        <briup-button @click="clickHandler">测试1</briup-button>
+        <briup-button>测试2</briup-button>
+        <briup-button>测试3</briup-button>
+        <briup-button>测试4</briup-button>
+    </div>
+
+    <script>
+        Vue.component('briup-button', {
+            template: `
+                <div :style="style" @click="clickHandler">
+                    <slot></slot>
+                </div>
+            `,
+            data() {
+                return {
+                    style: {
+                        padding: ".3em .6em",
+                        border: "1px solid teal",
+                        borderRadius: "3px",
+                        display: "inline-block",
+                        color: "teal",
+                        cursor: "pointer"
+                    }
+                }
+            },
+            methods: {
+                clickHandler() {
+                    this.$emit('click');
+                }
+            }
+        })
+
+        new new Vue({
+            el: "#app",
+            data: {
+                msg: "hello vue"
+            },
+            methods: {
+                clickHandler() {
+                    alert(1);
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

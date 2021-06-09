@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1-vue-basic</title>
+    <!-- 1. 引入vue -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+    <!-- 引入jquery - ajax -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <!-- 2. 编写视图模板 -->
+    <div id="app">
+        <h1>{{msg}}</h1>
+        <p>{{array}}</p>
+        <!-- 表格 -->
+        <table width="100%" border="1">
+            <thead>
+                <tr>
+                    <td>编号</td>
+                    <td>产品名称</td>
+                    <td>单价</td>
+                    <td>操作</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="p in list">
+                    <td>{{p.id}}</td>
+                    <td>{{p.name}}</td>
+                    <td>{{p.price}}</td>
+                    <td>
+                        <a href="">删除</a>
+                        <a href="">修改</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                msg: "hello vue",
+                array: ["terry", "larry", "tom"],
+                list:null // 初始化，产品数据
+            },
+            // 表示vue实例创建完毕，开始进行数据渲染
+            created(){
+                // this.changeArray();
+                this.loadProducts();
+            },
+            methods: {
+                // 加载产品信息
+                loadProducts() {
+                    let url = "http://localhost:8888/product/findAll";
+                    $.get(url, (response) => {
+                        if (response.status == 200) {
+                            this.list = response.data;
+                        } else {
+                            alert(response.message);
+                        }
+                    });
+                },
+                // 改变数组
+                changeArray() {
+                    setInterval(() => {
+                        this.array.push(Math.floor(Math.random() * 10))
+                    }, 1000)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

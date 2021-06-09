@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件库</title>
+    <!-- 1. 引入vue -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+    <!-- 引入样式 -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.2/theme-chalk/index.css" rel="stylesheet">
+    <!-- 引入组件库 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.2/index.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <el-button>新增</el-button>
+        <el-button type="primary">新增</el-button>
+        <el-button type="danger">新增</el-button>
+        <el-button type="primary" size="small">新增</el-button>
+
+        <el-table :data="products">
+            <el-table-column prop="id" label="编号"></el-table-column>
+            <el-table-column prop="name" label="产品名称"></el-table-column>
+            <el-table-column prop="price" label="产品单价"></el-table-column>
+        </el-table>
+
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                products: [{
+                    id: 1,
+                    name: '地板维护',
+                    price: 100
+                }, {
+                    id: 1,
+                    name: '落地窗清理',
+                    price: 20
+                }],
+                list: [{
+                    id: 1,
+                    name: "terry",
+                    age: 12
+                }, {
+                    id: 2,
+                    name: "larry",
+                    age: 12
+                }]
+            }
+        })
+    </script>
+</body>
+
+</html>
